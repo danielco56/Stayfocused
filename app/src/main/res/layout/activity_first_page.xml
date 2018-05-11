@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FirstPage">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Varsta"
+        android:textSize="25dp"
+        android:layout_above="@+id/Varsta"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-78dp" />
+
+    <EditText
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="78dp"
+        android:id="@+id/Varsta"
+        android:inputType="number"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="153dp"
+        android:text="Inaltime (cm)"
+        android:id="@+id/inaltime"
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/Inaltime"
+        android:inputType="number"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inaltime"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="212dp"
+        android:text="Greutate (kg)"
+        android:id="@+id/greutate"
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/Greutate"
+        android:layout_width="50dp"
+        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/greutate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-212dp"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="45dp"
+        android:text="Next"
+        android:id="@+id/next"/>
+</RelativeLayout>
