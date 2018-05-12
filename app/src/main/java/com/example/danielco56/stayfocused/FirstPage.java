@@ -2,6 +2,7 @@ package com.example.danielco56.stayfocused;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,10 +47,18 @@ public class FirstPage extends AppCompatActivity {
                 varsta = String.valueOf(editText1.getText().toString());
                 GGGreutate = Integer.parseInt(greutate);
                 saveData(next);
+
+
+                SharedPreferences prefs = getSharedPreferences("userInfo",MODE_PRIVATE);
+                Log.v(getGreutate(prefs),"asdasdasdasdasdasd");
+
+
+                
                 Intent first = new Intent(FirstPage.this, MainActivity.class);
                 startActivity(first);
             }
         });
+
 
 
 
@@ -69,6 +78,14 @@ public class FirstPage extends AppCompatActivity {
         Toast.makeText(this,"Datele sunt salvate !", Toast.LENGTH_SHORT).show();
 
     }
+
+
+    public String getGreutate(SharedPreferences ss){
+     String greutate = ss.getString("Greutate","");
+     return greutate;
+
+    }
+
 
 
 
