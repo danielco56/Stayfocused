@@ -30,7 +30,7 @@ public class FirstPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_page);
 
-        Button next = (Button)findViewById(R.id.next);
+        final Button next = (Button)findViewById(R.id.next);
 
         editText1 = findViewById(R.id.Vvvarsta);
         editText2 = findViewById(R.id.Iiinaltime);
@@ -44,13 +44,15 @@ public class FirstPage extends AppCompatActivity {
                 greutate = String.valueOf(editText3.getText().toString());
                 inaltime = String.valueOf(editText2.getText().toString());
                 varsta = String.valueOf(editText1.getText().toString());
-
                 GGGreutate = Integer.parseInt(greutate);
-
+                saveData(next);
                 Intent first = new Intent(FirstPage.this, MainActivity.class);
                 startActivity(first);
             }
         });
+
+
+
 
     }
 
