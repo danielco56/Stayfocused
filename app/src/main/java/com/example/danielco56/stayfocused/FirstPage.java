@@ -46,7 +46,7 @@ public class FirstPage extends AppCompatActivity {
         }
 
         try {
-            IIInaltime = Integer.parseInt(editText3.getText().toString());
+            IIInaltime = Integer.parseInt(editText2.getText().toString());
         } catch(NumberFormatException nfe) {
             System.out.println("Could not parse " + nfe);
         }
