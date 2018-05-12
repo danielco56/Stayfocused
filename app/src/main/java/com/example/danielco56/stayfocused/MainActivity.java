@@ -10,9 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.List;
+
+import static com.example.danielco56.stayfocused.FirstPage.GGGreutate;
+import static com.example.danielco56.stayfocused.FirstPage.VVVarsta;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +32,25 @@ public class MainActivity extends AppCompatActivity {
         if(isFirstRun){
             showStartDialog();
         }
+
+
+
+        Calcularea_alcolemiei bere = new Calcularea_alcolemiei(500,5,GGGreutate,2);
+        Calcularea_alcolemiei vin = new Calcularea_alcolemiei(1000,13,76,2);
+        Calcularea_alcolemiei spirtoase = new Calcularea_alcolemiei(100,50,76,2);
+
+        double rezult1=bere.alcolemie();
+        double rezult2=vin.alcolemie();
+        double rezult3=spirtoase.alcolemie();
+
+        TextView a = (TextView)findViewById(R.id.hhh);
+        a.setText(Double.toString(rezult1));
+
+        TextView b = (TextView)findViewById(R.id.yyy);
+        b.setText(Double.toString(rezult2));
+
+        TextView c = (TextView)findViewById(R.id.zzz);
+        c.setText(Double.toString(rezult3));
 
     }
 

@@ -9,9 +9,9 @@ import android.widget.EditText;
 
 public class FirstPage extends AppCompatActivity {
 
-    public static String VVVarsta;
-    public static String inaltime;
-    public static String greutate;
+    public static int VVVarsta;
+    public static int IIInaltime;
+    public static int GGGreutate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +28,29 @@ public class FirstPage extends AppCompatActivity {
         Button next = (Button)findViewById(R.id.next);
 
 
-        VVVarsta = editText1.getText().toString();
-        inaltime = editText2.getText().toString();
-        greutate = editText3.getText().toString();
+       // VVVarsta = editText1.getText().toString();
+       // IIInaltime = editText2.getText().toString();
+       // GGGreutate = editText3.getText().toString();
+
+
+        try {
+            VVVarsta = Integer.parseInt(editText1.getText().toString());
+        } catch(NumberFormatException nfe) {
+            System.out.println("Could not parse " + nfe);
+        }
+
+        try {
+            GGGreutate = Integer.parseInt(editText2.getText().toString());
+        } catch(NumberFormatException nfe) {
+            System.out.println("Could not parse " + nfe);
+        }
+
+        try {
+            IIInaltime = Integer.parseInt(editText3.getText().toString());
+        } catch(NumberFormatException nfe) {
+            System.out.println("Could not parse " + nfe);
+        }
+
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
