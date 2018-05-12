@@ -5,24 +5,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#455163"
     tools:context=".Controller">
 
     <Chronometer
         android:id="@+id/cron"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="50dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:textSize="50dp" />
+
+    <Button
+        android:id="@+id/bereButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:background="@drawable/beer"
+        android:layout_margin="10dp"
+        />
+
+    <Button
+        android:id="@+id/vinButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:background="@drawable/wine"
+        android:layout_margin="10dp"
+        />
+
+    <Button
+        android:id="@+id/alcButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:background="@drawable/cognac"
+        android:layout_margin="10dp"
+         />
 
     <Button
         android:id="@+id/stopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:text="Stop" />
+
     <TextView
+        android:id="@+id/testV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/testV"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
