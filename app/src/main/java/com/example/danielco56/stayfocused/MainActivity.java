@@ -65,5 +65,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void saveDataInfo(){
+
+        SharedPreferences info = getSharedPreferences("userInfo", MODE_PRIVATE);
+    }
+
 }
 
