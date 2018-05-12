@@ -6,24 +6,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".FirstPage">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Varsta"
-        android:textSize="25dp"
-        android:layout_above="@+id/Varsta"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-78dp" />
-
-    <EditText
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="78dp"
-        android:id="@+id/Varsta"
-        android:inputType="number"
-        android:gravity="center_horizontal" />
+        android:layout_marginTop="21dp"
+        android:text="Varsta"
+        android:id="@+id/varsta"
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/Vvvarsta"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/varsta"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:inputType="number" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,7 +37,7 @@
         android:textSize="25dp" />
 
     <EditText
-        android:id="@+id/Inaltime"
+        android:id="@+id/Iiinaltime"
         android:inputType="number"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
@@ -55,7 +56,7 @@
         android:textSize="25dp" />
 
     <EditText
-        android:id="@+id/Greutate"
+        android:id="@+id/Gggreutate"
         android:layout_width="50dp"
         android:inputType="number"
         android:layout_height="wrap_content"
