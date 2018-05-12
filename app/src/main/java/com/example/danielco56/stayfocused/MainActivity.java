@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         Calcularea_alcolemiei vin = new Calcularea_alcolemiei(1000, 13, 76, 2);
         Calcularea_alcolemiei spirtoase = new Calcularea_alcolemiei(100, 50, 76, 2);
 
-        double rezult1 = bere.alcolemie();
+        double rezult1 = bere.deshidratare();
         double rezult2 = vin.alcolemie();
         double rezult3 = spirtoase.alcolemie();
 
@@ -65,10 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void saveDataInfo(){
 
-        SharedPreferences info = getSharedPreferences("userInfo", MODE_PRIVATE);
-    }
 
 }
 

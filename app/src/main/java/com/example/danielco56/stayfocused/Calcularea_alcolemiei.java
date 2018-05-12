@@ -20,7 +20,23 @@ public class Calcularea_alcolemiei {
             rezultat = ((bautura_consumata * 0.03381402) * alcool_procent * 0.075 / (greutate * 2.2046244210837774)) - (timp * 0.015);
             return rezultat;
         }
+
+    public double deshidratare()
+    {
+        //askjdakj
+        double rez=0;
+        if(alcool_procent==5)   //500ml=500ml
+            rez=bautura_consumata;
+        if(alcool_procent==13)  //500ml=800ml
+            rez=bautura_consumata*1.6;
+        if(alcool_procent==40)  //500ml=2100ml
+            rez=bautura_consumata*4.2;
+        return rez;
+
     }
+
+
+}
 
 
 
