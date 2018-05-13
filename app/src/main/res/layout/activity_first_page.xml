@@ -5,72 +5,106 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
     tools:context=".FirstPage">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="21dp"
-        android:text="Varsta"
-        android:id="@+id/varsta"
-        android:textSize="25dp" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"/>
 
-    <EditText
-        android:id="@+id/Vvvarsta"
-        android:layout_width="50dp"
+    
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/varsta"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:inputType="number" />
+        android:layout_centerInParent="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="153dp"
-        android:text="Inaltime (cm)"
-        android:id="@+id/inaltime"
-        android:textSize="25dp" />
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/patrat_alb_fundal"
+             android:layout_marginStart="40dp"
+             android:layout_marginEnd="40dp"
+             >
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Incepem"
+                android:textSize="30sp"
+                android:padding="10dp"
+                android:gravity="center"
+                android:textColor="@color/brown"/>
 
-    <EditText
-        android:id="@+id/Iiinaltime"
-        android:inputType="number"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/inaltime"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Completeaza cu datele tale"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textColor="#32160d"
+                android:padding="25dp"/>
+             
+             <AutoCompleteTextView
+                 android:layout_width="match_parent"
+                 android:layout_height="40dp"
+                 android:hint = "Varsta"
+                 android:background="@drawable/patrate_cu_colturi_rotunde"
+                 android:layout_marginStart="50dp"
+                 android:layout_marginEnd="50dp"
+                 android:drawableLeft="@drawable/ic_agee"
+                 android:textSize="14sp"
+                 android:id="@+id/Vvvarsta"
+                 android:textColorHint="#35130a"
+                 android:layout_marginBottom="15dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="212dp"
-        android:text="Greutate (kg)"
-        android:id="@+id/greutate"
-        android:textSize="25dp" />
+             <AutoCompleteTextView
+                 android:layout_width="match_parent"
+                 android:layout_height="40dp"
+                 android:hint = "Inaltime"
+                 android:background="@drawable/patrate_cu_colturi_rotunde"
+                 android:layout_marginStart="50dp"
+                 android:layout_marginEnd="50dp"
+                 android:drawableLeft="@drawable/ic_height"
+                 android:textSize="14sp"
+                 android:textColorHint="#35130a"
+                 android:id="@+id/Iiinaltime"
+                 android:layout_marginBottom="15dp"/>
 
-    <EditText
-        android:id="@+id/Gggreutate"
-        android:layout_width="50dp"
-        android:inputType="number"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/greutate"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-212dp"
-        android:gravity="center_horizontal" />
+             <AutoCompleteTextView
+                 android:layout_width="match_parent"
+                 android:layout_height="40dp"
+                 android:hint = "Greutate"
+                 android:textColorHint="#35130a"
+                 android:background="@drawable/patrate_cu_colturi_rotunde"
+                 android:layout_marginStart="50dp"
+                 android:layout_marginEnd="50dp"
+                 android:id="@+id/Gggreutate"
+                 android:drawableLeft="@drawable/ic_weight"
+                 android:textSize="14sp"
+                 android:layout_marginBottom="15dp"/>
+             
+             <Button
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:text="Urmatorul"
+                 android:id="@+id/next"
+                 android:layout_marginTop="25dp"
+                 android:textSize="15dp"
+                 android:background="@drawable/patrat_rotund_putin"
+                 android:textColor="#35130a"
+                 android:padding="10dp"
+                 android:layout_marginBottom="10dp"
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"
-        android:text="Next"
-        android:id="@+id/next"/>
+                 />
+            
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
 </RelativeLayout>

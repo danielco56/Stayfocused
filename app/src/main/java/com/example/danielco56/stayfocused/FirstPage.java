@@ -1,8 +1,8 @@
 package com.example.danielco56.stayfocused;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +13,6 @@ import android.widget.Toast;
 
 public class FirstPage extends AppCompatActivity {
 
-
-    public static int greutateStatic = 0;
     private String varsta;
     private String inaltime;
     private String greutate;
@@ -33,7 +31,7 @@ public class FirstPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_page);
 
-        final Button next = (Button) findViewById(R.id.next);
+        final Button next = (Button)findViewById(R.id.next);
 
         editText1 = findViewById(R.id.Vvvarsta);
         editText2 = findViewById(R.id.Iiinaltime);
@@ -50,36 +48,46 @@ public class FirstPage extends AppCompatActivity {
                 GGGreutate = Integer.parseInt(greutate);
                 saveData(next);
 
-                SharedPreferences sharedPref = getSharedPreferences("userInfo", MODE_PRIVATE);
-                greutateStatic=Integer.parseInt(getGreutate(sharedPref));
+
+                SharedPreferences prefs = getSharedPreferences("userInfo",MODE_PRIVATE);
+                Log.v(getGreutate(prefs),"asdasdasdasdasdasd");
+
+
+
                 Intent first = new Intent(FirstPage.this, MainActivity.class);
                 startActivity(first);
             }
         });
 
 
+
+
+
     }
 
 
-    public void saveData(View view) {
+    public void saveData(View view){
 
         SharedPreferences sharedPref = getSharedPreferences("userInfo", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-
+        SharedPreferences.Editor editor =  sharedPref.edit();
         editor.putString("Varsta", editText1.getText().toString());
         editor.putString("Greutate", editText3.getText().toString());
         editor.putString("Inaltime", editText2.getText().toString());
         editor.apply();
 
-        Toast.makeText(this, "Datele sunt salvate !", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Datele sunt salvate !", Toast.LENGTH_SHORT).show();
 
     }
 
-    public String getGreutate(SharedPreferences ss) {
-        String greutate = ss.getString("Greutate", "");
-        return greutate;
+
+     public String getGreutate(SharedPreferences ss){
+     String greutate = ss.getString("Greutate","");
+     return greutate;
 
     }
+
+
+
 
 
 }
