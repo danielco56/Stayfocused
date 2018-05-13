@@ -53,7 +53,7 @@ public class FirstPage extends AppCompatActivity {
                 Log.v(getGreutate(prefs),"asdasdasdasdasdasd");
 
 
-                
+
                 Intent first = new Intent(FirstPage.this, MainActivity.class);
                 startActivity(first);
             }
@@ -80,7 +80,7 @@ public class FirstPage extends AppCompatActivity {
     }
 
 
-    public String getGreutate(SharedPreferences ss){
+     public String getGreutate(SharedPreferences ss){
      String greutate = ss.getString("Greutate","");
      return greutate;
 
