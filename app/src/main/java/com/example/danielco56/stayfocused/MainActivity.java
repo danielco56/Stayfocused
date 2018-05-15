@@ -26,24 +26,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Boolean isFirstRun = getSharedPreferences("Preference", MODE_PRIVATE).getBoolean("isfirstrun", true);
 
-        if (isFirstRun) {
-            showStartDialog();
-        }
 
 
     }
 
-    private void showStartDialog() {
-        Intent firstActivity = new Intent(MainActivity.this, FirstPage.class);
-        startActivity(firstActivity);
 
-        SharedPreferences prefs = getSharedPreferences("Preference", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("isfirstrun", false);
-        editor.apply();
-    }
 
 
 

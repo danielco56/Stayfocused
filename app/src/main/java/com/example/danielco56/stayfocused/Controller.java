@@ -1,12 +1,16 @@
 package com.example.danielco56.stayfocused;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -24,6 +28,7 @@ import java.util.Objects;
 
 public class Controller extends AppCompatActivity {
 
+    private NotificationHelper helper;
     private Button stopButton, beerButton, wineButton, alcButton;
     private Chronometer cronometru;
     private TextView cron;
@@ -37,6 +42,13 @@ public class Controller extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controller);
 
+        Boolean isFirstRun = getSharedPreferences("Preference", MODE_PRIVATE).getBoolean("isfirstrun", true);
+
+        if (isFirstRun) {
+            showStartDialog();
+        }
+
+        helper = new NotificationHelper(this);
         stopButton = (Button) findViewById(R.id.stopButton);
         beerButton = (Button) findViewById(R.id.bereButton);
         wineButton = (Button) findViewById(R.id.vinButton);
@@ -45,7 +57,7 @@ public class Controller extends AppCompatActivity {
 
 
         //CRONOMETRUL
-        if(mCronometru==null) {
+        if (mCronometru == null) {
             mCronometru = new Cronometru(this);
             mThread = new Thread(mCronometru);
             mCronometru.start();
@@ -70,10 +82,20 @@ public class Controller extends AppCompatActivity {
 
                 bauturi.add(new Alcool(500, 5));
                 Toast.makeText(getApplicationContext(), "Bere adaugata!", Toast.LENGTH_SHORT).show();
-              //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
-                if(bauturi.size()%2==0) {
-                    sendNotification("Trebuie să bei apă!");
-                    Toast.makeText(getApplicationContext(),"asdasdasd",Toast.LENGTH_SHORT);
+                //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
+                if (bauturi.size() % 2 == 0) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Do something after 5s = 5000ms
+                            if(Build.VERSION.SDK_INT<25)
+                            sendNotification("Trebuie să bei apă!");
+                            else
+                                notificareNewAPI("Trebuie să bei apă!");
+
+                        }
+                    }, 5000);
                 }
 
 
@@ -85,14 +107,17 @@ public class Controller extends AppCompatActivity {
             public void onClick(View v) {
                 bauturi.add(new Alcool(120, 13));
                 Toast.makeText(getApplicationContext(), "Vin adaugat!", Toast.LENGTH_SHORT).show();
-              //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
-                if(bauturi.size()%2==0) {
+                //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
+                if (bauturi.size() % 2 == 0) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            sendNotification("Trebuie să bei apă!");
+                            if(Build.VERSION.SDK_INT<25)
+                                sendNotification("Trebuie să bei apă!");
+                            else
+                                notificareNewAPI("Trebuie să bei apă!");
 
                         }
                     }, 5000);
@@ -107,14 +132,17 @@ public class Controller extends AppCompatActivity {
 
                 bauturi.add(new Alcool(50, 40));
                 Toast.makeText(getApplicationContext(), "Bautura adaugata!", Toast.LENGTH_SHORT).show();
-              //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
-                if(bauturi.size()%2==0) {
+                //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
+                if (bauturi.size() % 2 == 0) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            sendNotification("Trebuie să bei apă!");
+                            if(Build.VERSION.SDK_INT<25)
+                                sendNotification("Trebuie să bei apă!");
+                            else
+                                notificareNewAPI("Trebuie să bei apă!");
 
                         }
                     }, 5000);
@@ -126,25 +154,41 @@ public class Controller extends AppCompatActivity {
 
     }
 
+    private void showStartDialog() {
+        Intent firstActivity = new Intent(Controller.this, FirstPage.class);
+        startActivity(firstActivity);
+
+        SharedPreferences prefs = getSharedPreferences("Preference", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("isfirstrun", false);
+        editor.apply();
+    }
+
+
+
+    private void notificareNewAPI(String body) {
+        Notification.Builder builder = helper.getMyChannelNotification(body);
+        helper.getManager().notify();
+    }
 
     private void sendNotification(String st) {
-        Notification.Builder notificationBuilder = new  Notification.Builder(this)
+        Notification.Builder notificationBuilder = new Notification.Builder(this)
                 .setSmallIcon(android.R.drawable.stat_notify_more)
                 .setContentTitle("Notificare Dă-i Groapă")
-                .setVibrate(new long[]{ 1000, 1000, 1000, 1000, 1000 })
+                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentText(st)
                 .setPriority(Notification.PRIORITY_MAX);
 
-        Intent notificationIntent=new Intent(Controller.this, Controller.class);
-        PendingIntent pendingIntent=PendingIntent.getActivity(this,0,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent notificationIntent = new Intent(Controller.this, Controller.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationManager notificationManager=(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0,notificationBuilder.build());
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notificationBuilder.build());
 
     }
 
-    public void updateTimer(final String time){
+    public void updateTimer(final String time) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
