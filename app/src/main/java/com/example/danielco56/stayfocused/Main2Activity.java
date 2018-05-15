@@ -8,9 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,13 +34,18 @@ public class Main2Activity extends AppCompatActivity {
 
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.000000");
 
+        //calculator alcolemie si transfomrare in string
         calculator.alcolemie();
-
         String ss = decimalFormat.format(rezultat);
 
-        Log.v(ss,"asdasdasdasdasdasdasd");
+        //data formatare si transformare in string
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date currentTime = Calendar.getInstance().getTime();
+        String data = df.format(currentTime);
+
+        //introducere date in hashmap
         HashMap<String, String> alcolemie = new HashMap<>();
-        alcolemie.put("13/Mai/2018 ", ss );
+        alcolemie.put(data, ss );
 
 
         List<HashMap<String,String>> listItems = new ArrayList<>()

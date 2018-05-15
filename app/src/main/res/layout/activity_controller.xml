@@ -30,13 +30,14 @@
             android:layout_height="wrap_content">
 
 
-            <Chronometer
+            <TextView
                 android:id="@+id/cron"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
+                android:text="00:00:00"
                 android:textColor="#fff"
                 android:textSize="55dp"
                 android:textStyle="bold" />

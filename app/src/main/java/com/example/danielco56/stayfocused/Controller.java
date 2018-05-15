@@ -26,10 +26,11 @@ public class Controller extends AppCompatActivity {
 
     private Button stopButton, beerButton, wineButton, alcButton;
     private Chronometer cronometru;
-  //  private TextView textView;
+    private TextView cron;
     public static double time;
     public static ArrayList<Alcool> bauturi = new ArrayList<Alcool>();
-
+    private Cronometru mCronometru;
+    private Thread mThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +41,21 @@ public class Controller extends AppCompatActivity {
         beerButton = (Button) findViewById(R.id.bereButton);
         wineButton = (Button) findViewById(R.id.vinButton);
         alcButton = (Button) findViewById(R.id.alcButton);
-        cronometru = (Chronometer) findViewById(R.id.cron);
-//      textView = (TextView) findViewById(R.id.testV);
+        cron = (TextView) findViewById(R.id.cron);
 
-        cronometru.setBase(SystemClock.elapsedRealtime());
-        cronometru.start();
-       // textView.setText("Pana acum ai consumat: 0 bauturi alcoolice");
+
+        //CRONOMETRUL
+        if(mCronometru==null) {
+            mCronometru = new Cronometru(this);
+            mThread = new Thread(mCronometru);
+            mCronometru.start();
+            mThread.start();
+        }
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                cronometru.stop();
-                //   textView.setText(String.valueOf(String.valueOf(hours) + ":" + String.valueOf(minutes) + ":" + String.valueOf(seconds)));
-                int elapsedMillis = (int) (SystemClock.elapsedRealtime() - cronometru.getBase()); // milisecunde
-                int minutes = (int) (elapsedMillis / (1000 * 60));
-                //  double hours = (int) ((elapsedMillis / (1000 * 60 * 60)) % 24);
-                time = (double) minutes / 60;
                 Intent intent = new Intent(Controller.this, Main2Activity.class);
                 startActivity(intent);
 
@@ -141,6 +140,15 @@ public class Controller extends AppCompatActivity {
         NotificationManager notificationManager=(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0,notificationBuilder.build());
 
+    }
+
+    public void updateTimer(final String time){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                cron.setText(time);
+            }
+        });
     }
 
 
