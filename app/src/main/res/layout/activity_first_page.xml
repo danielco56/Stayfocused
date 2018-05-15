@@ -32,7 +32,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Incepem"
+                android:text="Începem"
                 android:textSize="30sp"
                 android:padding="10dp"
                 android:gravity="center"
@@ -41,7 +41,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Completeaza cu datele tale"
+                android:text="Completează cu datele tale "
                 android:textSize="20sp"
                 android:gravity="center"
                 android:textColor="#32160d"
@@ -50,7 +50,7 @@
              <AutoCompleteTextView
                  android:layout_width="match_parent"
                  android:layout_height="40dp"
-                 android:hint = "Varsta"
+                 android:hint = "Vârstă"
                  android:background="@drawable/patrate_cu_colturi_rotunde"
                  android:layout_marginStart="50dp"
                  android:layout_marginEnd="50dp"
@@ -63,7 +63,7 @@
              <AutoCompleteTextView
                  android:layout_width="match_parent"
                  android:layout_height="40dp"
-                 android:hint = "Inaltime"
+                 android:hint = "Înălţime"
                  android:background="@drawable/patrate_cu_colturi_rotunde"
                  android:layout_marginStart="50dp"
                  android:layout_marginEnd="50dp"
@@ -90,7 +90,7 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_gravity="center_horizontal"
-                 android:text="Urmatorul"
+                 android:text="Următorul"
                  android:id="@+id/next"
                  android:layout_marginTop="25dp"
                  android:textSize="15dp"

@@ -56,6 +56,8 @@ public class Controller extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                mCronometru.stop();
+                mThread.stop();
                 Intent intent = new Intent(Controller.this, Main2Activity.class);
                 startActivity(intent);
 
@@ -126,7 +128,7 @@ public class Controller extends AppCompatActivity {
 
 
     private void sendNotification(String st) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        Notification.Builder notificationBuilder = new  Notification.Builder(this)
                 .setSmallIcon(android.R.drawable.stat_notify_more)
                 .setContentTitle("Notificare Dă-i Groapă")
                 .setVibrate(new long[]{ 1000, 1000, 1000, 1000, 1000 })
