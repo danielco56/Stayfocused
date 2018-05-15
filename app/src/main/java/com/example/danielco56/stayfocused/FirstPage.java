@@ -20,6 +20,7 @@ public class FirstPage extends AppCompatActivity {
     public static int VVVarsta;
     public static int IIInaltime;
     public static int GGGreutate;
+    public static int greutateStatic;
 
     EditText editText1;
     EditText editText2;
@@ -48,13 +49,9 @@ public class FirstPage extends AppCompatActivity {
                 GGGreutate = Integer.parseInt(greutate);
                 saveData(next);
 
-
                 SharedPreferences prefs = getSharedPreferences("userInfo",MODE_PRIVATE);
-                Log.v(getGreutate(prefs),"asdasdasdasdasdasd");
 
-
-
-                Intent first = new Intent(FirstPage.this, MainActivity.class);
+                Intent first = new Intent(FirstPage.this, Controller.class);
                 startActivity(first);
             }
         });

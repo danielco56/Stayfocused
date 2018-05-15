@@ -35,22 +35,22 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(this, Controller.class);
 //        startActivity(intent);
 
-        Calcularea_alcolemiei bere = new Calcularea_alcolemiei(500, 5, GGGreutate, 2);
-        Calcularea_alcolemiei vin = new Calcularea_alcolemiei(1000, 13, 76, 2);
-        Calcularea_alcolemiei spirtoase = new Calcularea_alcolemiei(100, 50, 76, 2);
+//        Calcularea_alcolemiei bere = new Calcularea_alcolemiei(500, 5, GGGreutate, 2);
+//        Calcularea_alcolemiei vin = new Calcularea_alcolemiei(1000, 13, 76, 2);
+//        Calcularea_alcolemiei spirtoase = new Calcularea_alcolemiei(100, 50, 76, 2);
+//
+//        double rezult1 = bere.alcolemie();
+//        double rezult2 = vin.alcolemie();
+//        double rezult3 = spirtoase.alcolemie();
 
-        double rezult1 = bere.alcolemie();
-        double rezult2 = vin.alcolemie();
-        double rezult3 = spirtoase.alcolemie();
-
-        TextView a = (TextView) findViewById(R.id.hhh);
-        a.setText(Double.toString(rezult1));
-
-        TextView b = (TextView) findViewById(R.id.yyy);
-        b.setText(Double.toString(rezult2));
-
-        TextView c = (TextView) findViewById(R.id.zzz);
-        c.setText(Double.toString(rezult3));
+//        TextView a = (TextView) findViewById(R.id.hhh);
+//        a.setText(Double.toString(rezult1));
+//
+//        TextView b = (TextView) findViewById(R.id.yyy);
+//        b.setText(Double.toString(rezult2));
+//
+//        TextView c = (TextView) findViewById(R.id.zzz);
+//        c.setText(Double.toString(rezult3));
 
     }
 

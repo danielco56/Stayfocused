@@ -17,7 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Controller" />
-        <activity android:name=".FirstPage"></activity>
+        <activity android:name=".FirstPage" />
+        <activity android:name=".Main2Activity" />
+        <activity android:name=".UserResult"></activity>
     </application>
 
 </manifest>
