@@ -26,9 +26,11 @@ public class Controller extends AppCompatActivity {
 
     private Button stopButton, beerButton, wineButton, alcButton;
     private Chronometer cronometru;
-    private TextView textView;
+    private TextView cron;
     public static double time;
     public static ArrayList<Alcool> bauturi = new ArrayList<Alcool>();
+    private Cronometru mCronometru;
+    private Thread mThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +41,22 @@ public class Controller extends AppCompatActivity {
         beerButton = (Button) findViewById(R.id.bereButton);
         wineButton = (Button) findViewById(R.id.vinButton);
         alcButton = (Button) findViewById(R.id.alcButton);
-        cronometru = (Chronometer) findViewById(R.id.cron);
-        textView = (TextView) findViewById(R.id.testV);
+        cron = (TextView) findViewById(R.id.cron);
 
-        cronometru.setBase(SystemClock.elapsedRealtime());
-        cronometru.start();
-        textView.setText("Pana acum ai consumat: 0 bauturi alcoolice");
+
+        //CRONOMETRUL
+        if(mCronometru==null) {
+            mCronometru = new Cronometru(this);
+            mThread = new Thread(mCronometru);
+            mCronometru.start();
+            mThread.start();
+        }
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                System.out.println("dasfdasda");
-                cronometru.stop();
-                //   textView.setText(String.valueOf(String.valueOf(hours) + ":" + String.valueOf(minutes) + ":" + String.valueOf(seconds)));
-                int elapsedMillis = (int) (SystemClock.elapsedRealtime() - cronometru.getBase()); // milisecunde
-                int minutes = (int) (elapsedMillis / (1000 * 60));
-                //  double hours = (int) ((elapsedMillis / (1000 * 60 * 60)) % 24);
-                time = (double) minutes / 60;
-                Intent intent = new Intent(Controller.this, UserResult.class);
+                Intent intent = new Intent(Controller.this, Main2Activity.class);
                 startActivity(intent);
 
             }
@@ -69,16 +68,10 @@ public class Controller extends AppCompatActivity {
 
                 bauturi.add(new Alcool(500, 5));
                 Toast.makeText(getApplicationContext(), "Bere adaugata!", Toast.LENGTH_SHORT).show();
-                textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
+              //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
                 if(bauturi.size()%2==0) {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Do something after 5s = 5000ms
-                            sendNotification();
-                        }
-                    }, 5000);
+                    sendNotification("Trebuie să bei apă!");
+                    Toast.makeText(getApplicationContext(),"asdasdasd",Toast.LENGTH_SHORT);
                 }
 
 
@@ -90,14 +83,15 @@ public class Controller extends AppCompatActivity {
             public void onClick(View v) {
                 bauturi.add(new Alcool(120, 13));
                 Toast.makeText(getApplicationContext(), "Vin adaugat!", Toast.LENGTH_SHORT).show();
-                textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
+              //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
                 if(bauturi.size()%2==0) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            sendNotification();
+                            sendNotification("Trebuie să bei apă!");
+
                         }
                     }, 5000);
                 }
@@ -111,30 +105,33 @@ public class Controller extends AppCompatActivity {
 
                 bauturi.add(new Alcool(50, 40));
                 Toast.makeText(getApplicationContext(), "Bautura adaugata!", Toast.LENGTH_SHORT).show();
-                textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
+              //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
                 if(bauturi.size()%2==0) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            sendNotification();
+                            sendNotification("Trebuie să bei apă!");
+
                         }
                     }, 5000);
                 }
+
             }
         });
 
 
     }
 
-    private void sendNotification() {
+
+    private void sendNotification(String st) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(android.R.drawable.stat_notify_more)
-                .setContentTitle("Notification from Let's Drink")
+                .setContentTitle("Notificare Dă-i Groapă")
                 .setVibrate(new long[]{ 1000, 1000, 1000, 1000, 1000 })
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentText("Trebuie sa bei apa!")
+                .setContentText(st)
                 .setPriority(Notification.PRIORITY_MAX);
 
         Intent notificationIntent=new Intent(Controller.this, Controller.class);
@@ -143,6 +140,15 @@ public class Controller extends AppCompatActivity {
         NotificationManager notificationManager=(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0,notificationBuilder.build());
 
+    }
+
+    public void updateTimer(final String time){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                cron.setText(time);
+            }
+        });
     }
 
 
