@@ -1,11 +1,19 @@
 package com.example.danielco56.stayfocused;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +27,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -36,7 +45,9 @@ public class Statistics extends AppCompatActivity {
     public TextView tx1, tx2, tx3;
     private double s = 0;
     private Controller controller = new Controller();
-
+    public Button button;
+    public ImageView imageView;
+    static final int CAM_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +116,38 @@ public class Statistics extends AppCompatActivity {
         data.setValueTextColor(Color.BLACK);
 
         pie.setData(data);
+        ///
+        button = (Button) findViewById(R.id.button);
+        imageView = (ImageView) findViewById(R.id.cerc);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = getFile();
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                startActivityForResult(camera_intent, CAM_REQUEST);
 
+            }
+        });
 
     }
 
+    private File getFile(){
+        File folder = new File("sdcard/camera_daigroapa");
+        if(!folder.exists()){
+            folder.mkdir();
+        }
+        File image_file=new File(folder,"user_photo.jpg");
+        return image_file;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String path = "sdcard/camera_daigroapa/user_photo.jpg";
+        imageView.setImageDrawable(Drawable.createFromPath(path));
+    }
+
+    ////
     private String returnTime() {
 
         long since = timesUP;
