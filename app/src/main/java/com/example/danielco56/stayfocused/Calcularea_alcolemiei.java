@@ -1,18 +1,14 @@
 package com.example.danielco56.stayfocused;
 
-import static com.example.danielco56.stayfocused.FirstPage.greutateStatic;
+
 
 public class Calcularea_alcolemiei {
 
     private Controller controller = new Controller();
-    private FirstPage firstPage=new FirstPage();
-    private int greutate;
-    private int timp;
     public static double rezultat = 0;
 
 
     public double alcolemie() {
-
 
 
         for (Alcool alcool : controller.bauturi) {

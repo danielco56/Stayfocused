@@ -9,8 +9,9 @@ public class Cronometru implements Runnable{
     public static final long MILLS_to_HOURS = 3600000;
 
     private Context mContext;
-    private long mStartTime;
+    public static long mStartTime;
 
+    public static long timesUP=0;
     private boolean mIsRunning;
 
     public Cronometru(Context context){
@@ -24,6 +25,7 @@ public class Cronometru implements Runnable{
 
     public void stop(){
         mIsRunning=false;
+        timesUP = System.currentTimeMillis()-mStartTime;
     }
 
     @Override
@@ -38,6 +40,7 @@ public class Cronometru implements Runnable{
             int hours = (int)((since/MILLS_to_HOURS)%24);
 
             ((Controller)mContext).updateTimer(String.format("%02d:%02d:%02d",hours,minutes,seconds));
+
         }
 
 

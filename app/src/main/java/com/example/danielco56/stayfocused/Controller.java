@@ -1,9 +1,7 @@
 package com.example.danielco56.stayfocused;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.Notification;
-import android.app.NotificationChannel;
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,30 +10,37 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Handler;
-import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Chronometer;
-import android.widget.EditText;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.ArrayList;
-import java.util.Objects;
+
 
 public class Controller extends AppCompatActivity {
 
     private NotificationHelper helper;
     private Button stopButton, beerButton, wineButton, alcButton;
-    private Chronometer cronometru;
     private TextView cron;
     public static double time;
     public static ArrayList<Alcool> bauturi = new ArrayList<Alcool>();
     private Cronometru mCronometru;
     private Thread mThread;
+
+    private Statistics statistics;
+    public static String timer1;
+
+
+    public static int nrBere = 0, nrVin = 0, nrTarie = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,9 @@ public class Controller extends AppCompatActivity {
         setContentView(R.layout.activity_controller);
 
         Boolean isFirstRun = getSharedPreferences("Preference", MODE_PRIVATE).getBoolean("isfirstrun", true);
+
+        //////////////AD
+
 
         if (isFirstRun) {
             showStartDialog();
@@ -55,6 +63,12 @@ public class Controller extends AppCompatActivity {
         alcButton = (Button) findViewById(R.id.alcButton);
         cron = (TextView) findViewById(R.id.cron);
 
+        ////AD
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        AdView adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        ////
 
         //CRONOMETRUL
         if (mCronometru == null) {
@@ -64,23 +78,13 @@ public class Controller extends AppCompatActivity {
             mThread.start();
         }
 
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mCronometru.stop();
-                mThread.stop();
-                Intent intent = new Intent(Controller.this, Main2Activity.class);
-                startActivity(intent);
-
-            }
-        });
 
         beerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 bauturi.add(new Alcool(500, 5));
+                nrBere++;
                 Toast.makeText(getApplicationContext(), "Bere adaugata!", Toast.LENGTH_SHORT).show();
                 //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
                 if (bauturi.size() % 2 == 0) {
@@ -89,10 +93,10 @@ public class Controller extends AppCompatActivity {
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            if(Build.VERSION.SDK_INT<25)
-                            sendNotification("Trebuie să bei apă!");
-                            else
-                                notificareNewAPI("Trebuie să bei apă!");
+                            if (Build.VERSION.SDK_INT < 25)
+                                sendNotification("Trebuie să bei apă!");
+//                            else
+//                                notificareNewAPI("Trebuie să bei apă!");
 
                         }
                     }, 5000);
@@ -106,6 +110,7 @@ public class Controller extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bauturi.add(new Alcool(120, 13));
+                nrVin++;
                 Toast.makeText(getApplicationContext(), "Vin adaugat!", Toast.LENGTH_SHORT).show();
                 //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
                 if (bauturi.size() % 2 == 0) {
@@ -114,10 +119,10 @@ public class Controller extends AppCompatActivity {
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            if(Build.VERSION.SDK_INT<25)
+                            if (Build.VERSION.SDK_INT < 25)
                                 sendNotification("Trebuie să bei apă!");
-                            else
-                                notificareNewAPI("Trebuie să bei apă!");
+//                            else
+//                                notificareNewAPI("Trebuie să bei apă!");
 
                         }
                     }, 5000);
@@ -131,6 +136,7 @@ public class Controller extends AppCompatActivity {
             public void onClick(View v) {
 
                 bauturi.add(new Alcool(50, 40));
+                nrTarie++;
                 Toast.makeText(getApplicationContext(), "Bautura adaugata!", Toast.LENGTH_SHORT).show();
                 //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
                 if (bauturi.size() % 2 == 0) {
@@ -139,14 +145,33 @@ public class Controller extends AppCompatActivity {
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            if(Build.VERSION.SDK_INT<25)
+                            if (Build.VERSION.SDK_INT < 25)
                                 sendNotification("Trebuie să bei apă!");
-                            else
-                                notificareNewAPI("Trebuie să bei apă!");
+//                            else
+//                                notificareNewAPI("Trebuie să bei apă!");
 
                         }
                     }, 5000);
                 }
+
+            }
+        });
+
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                //introduc valori in textboxul cu bauturi alcolemie si timp
+
+                mCronometru.stop();
+
+
+                statistics = new Statistics();
+
+                Intent intent = new Intent(Controller.this, Statistics.class);
+                startActivity(intent);
 
             }
         });
@@ -165,11 +190,10 @@ public class Controller extends AppCompatActivity {
     }
 
 
-
-    private void notificareNewAPI(String body) {
-        Notification.Builder builder = helper.getMyChannelNotification(body);
-        helper.getManager().notify();
-    }
+//    private void notificareNewAPI(String body) {
+//        Notification.Builder builder = helper.getMyChannelNotification(body);
+//        helper.getManager().notify();
+//    }
 
     private void sendNotification(String st) {
         Notification.Builder notificationBuilder = new Notification.Builder(this)

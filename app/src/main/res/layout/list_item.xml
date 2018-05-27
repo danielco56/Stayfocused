@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:background="#cfc7c4">
 
 
     <TextView
@@ -12,6 +13,7 @@
         android:id="@+id/txtitem"
         android:textSize="20dp"
         android:text="ss"
+        android:textColor="#fe9172"
         android:padding="5dp"
         />
 
@@ -21,6 +23,7 @@
         android:id="@+id/txtitem2"
         android:textSize="15dp"
         android:text="ss"
+        android:textColor="#cd5585"
         android:padding="5dp"
 
         />
