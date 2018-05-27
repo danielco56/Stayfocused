@@ -17,10 +17,6 @@ public class FirstPage extends AppCompatActivity {
     private String inaltime;
     private String greutate;
 
-    public static int VVVarsta;
-    public static int IIInaltime;
-    public static int GGGreutate;
-    public static int greutateStatic;
 
     EditText editText1;
     EditText editText2;
@@ -32,7 +28,7 @@ public class FirstPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_page);
 
-        final Button next = (Button)findViewById(R.id.next);
+        final Button next = (Button) findViewById(R.id.next);
 
         editText1 = findViewById(R.id.Vvvarsta);
         editText2 = findViewById(R.id.Iiinaltime);
@@ -46,10 +42,11 @@ public class FirstPage extends AppCompatActivity {
                 greutate = String.valueOf(editText3.getText().toString());
                 inaltime = String.valueOf(editText2.getText().toString());
                 varsta = String.valueOf(editText1.getText().toString());
-                GGGreutate = Integer.parseInt(greutate);
-                saveData(next);
 
-                SharedPreferences prefs = getSharedPreferences("userInfo",MODE_PRIVATE);
+               SharedPreferences sharedPref = getSharedPreferences("userInfo", 0);
+               SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("Greutate", greutate);
+                editor.apply();
 
                 Intent first = new Intent(FirstPage.this, Controller.class);
                 startActivity(first);
@@ -57,34 +54,14 @@ public class FirstPage extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
 
-    public void saveData(View view){
-
-        SharedPreferences sharedPref = getSharedPreferences("userInfo", MODE_PRIVATE);
-        SharedPreferences.Editor editor =  sharedPref.edit();
-        editor.putString("Varsta", editText1.getText().toString());
-        editor.putString("Greutate", editText3.getText().toString());
-        editor.putString("Inaltime", editText2.getText().toString());
-        editor.apply();
-
-        Toast.makeText(this,"Datele sunt salvate !", Toast.LENGTH_SHORT).show();
+    public String getGreutate(SharedPreferences ss) {
+        String greutate = ss.getString("Greutate", "");
+        return greutate;
 
     }
-
-
-     public String getGreutate(SharedPreferences ss){
-     String greutate = ss.getString("Greutate","");
-     return greutate;
-
-    }
-
-
-
 
 
 }

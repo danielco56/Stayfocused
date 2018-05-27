@@ -1,10 +1,13 @@
 package com.example.danielco56.stayfocused;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -19,7 +22,7 @@ import com.google.android.gms.ads.MobileAds;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import static com.example.danielco56.stayfocused.Calcularea_alcolemiei.rezultat;
+
 import static com.example.danielco56.stayfocused.Controller.nrBere;
 import static com.example.danielco56.stayfocused.Controller.nrTarie;
 import static com.example.danielco56.stayfocused.Controller.nrVin;
@@ -31,7 +34,8 @@ public class Statistics extends AppCompatActivity {
 
 
     public TextView tx1, tx2, tx3;
-    private Calcularea_alcolemiei calculator = new Calcularea_alcolemiei();
+    private double s = 0;
+    private Controller controller = new Controller();
 
 
     @Override
@@ -40,21 +44,20 @@ public class Statistics extends AppCompatActivity {
         setContentView(R.layout.activity_statistics);
 
         /////////AD
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
-        AdView adView = (AdView) findViewById(R.id.adView2);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        //   MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+        //   AdView adView = (AdView) findViewById(R.id.adView2);
+        //    AdRequest adRequest = new AdRequest.Builder().build();
+        //   adView.loadAd(adRequest);
         /////////
-
 
         PieChart pie = (PieChart) findViewById(R.id.pie);
         tx1 = (TextView) findViewById(R.id.BAUTURI);
         tx2 = (TextView) findViewById(R.id.ALCOLEMIE);
         tx3 = (TextView) findViewById(R.id.TIMP);
 
-        calculator.alcolemie();
+
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.000000");
-        String ss = decimalFormat.format(rezultat);
+        String ss = decimalFormat.format(alcolemie());
 
         String sumB = String.valueOf(nrBere + nrTarie + nrVin);
         tx1.setText(sumB);
@@ -151,6 +154,25 @@ public class Statistics extends AppCompatActivity {
 
         String time = h1 + ":" + m1 + ":" + s1;
         return time;
+    }
+
+    public int getGreutate() {
+        SharedPreferences result = getSharedPreferences("userInfo", 0);
+        int greutate = Integer.parseInt(result.getString("Greutate", "Nu au fost gasite datele!"));
+        return greutate;
+    }
+
+    public double alcolemie() {
+        double rezultat = 0;
+        long since = timesUP;
+        int hours = (int) ((since / 3600000) % 24);
+
+        for (Alcool alcool : Controller.bauturi) {
+            rezultat += ((alcool.getCantitate() * 0.03381402) * alcool.getConcentratie() * 0.075 / (getGreutate() * 2.2046244210837774)) - (hours * 0.015);
+        }
+        return rezultat;
+
+
     }
 
 

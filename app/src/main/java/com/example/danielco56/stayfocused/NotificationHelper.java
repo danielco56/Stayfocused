@@ -8,9 +8,11 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Color;
 import android.media.RingtoneManager;
+import android.support.annotation.RequiresApi;
 
 import java.lang.annotation.Target;
-@TargetApi(26)
+
+@RequiresApi(26)
 public class NotificationHelper extends ContextWrapper {
 
     private NotificationManager manager;
@@ -19,7 +21,7 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationHelper(Context base) {
         super(base);
-
+        createChannel();
     }
 
 

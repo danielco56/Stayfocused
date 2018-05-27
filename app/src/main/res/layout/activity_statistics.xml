@@ -54,7 +54,8 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:text="Alcolemie"
-                        android:textColor="#000000"
+                        android:textColor="#424242"
+                        android:textStyle="bold"
                         android:textSize="15dp" />
 
                     <TextView
@@ -64,7 +65,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="10dp"
                         android:text="0"
-                        android:textColor="#000000"
+                        android:textColor="#424242"
                         android:textSize="15dp" />
 
 
@@ -83,7 +84,8 @@
                         android:layout_gravity="center_horizontal"
                         android:padding="10dp"
                         android:text="Bauturi"
-                        android:textColor="#000000"
+                        android:textStyle="bold"
+                        android:textColor="#424242"
                         android:textSize="15dp" />
 
                     <TextView
@@ -94,7 +96,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="40dp"
                         android:text="0"
-                        android:textColor="#000000"
+                        android:textColor="#424242"
                         android:textSize="15dp" />
 
 
@@ -113,7 +115,8 @@
                         android:layout_gravity="center_horizontal"
                         android:padding="10dp"
                         android:text="Timp"
-                        android:textColor="#000000"
+                        android:textStyle="bold"
+                        android:textColor="#424242"
                         android:textSize="15dp" />
 
                     <TextView
@@ -123,7 +126,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="19dp"
                         android:text="0"
-                        android:textColor="#000000"
+                        android:textColor="#424242"
                         android:textSize="15dp" />
 
 

@@ -36,6 +36,7 @@ public class Controller extends AppCompatActivity {
     private Cronometru mCronometru;
     private Thread mThread;
 
+
     private Statistics statistics;
     public static String timer1;
 
@@ -56,7 +57,8 @@ public class Controller extends AppCompatActivity {
             showStartDialog();
         }
 
-        helper = new NotificationHelper(this);
+        if (Build.VERSION.SDK_INT >= 26)
+            helper = new NotificationHelper(this);
         stopButton = (Button) findViewById(R.id.stopButton);
         beerButton = (Button) findViewById(R.id.bereButton);
         wineButton = (Button) findViewById(R.id.vinButton);
@@ -220,6 +222,9 @@ public class Controller extends AppCompatActivity {
             }
         });
     }
+
+
+
 
 
 }

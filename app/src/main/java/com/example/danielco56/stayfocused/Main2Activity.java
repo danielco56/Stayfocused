@@ -1,6 +1,7 @@
 package com.example.danielco56.stayfocused;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.renderscript.Sampler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.danielco56.stayfocused.Calcularea_alcolemiei.rezultat;
 import static com.example.danielco56.stayfocused.Controller.bauturi;
 
 public class Main2Activity extends AppCompatActivity {
@@ -33,19 +33,20 @@ public class Main2Activity extends AppCompatActivity {
     public static String ss;
 
 
-    private Calcularea_alcolemiei calculator=new Calcularea_alcolemiei();
+    private Controller controller = new Controller();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        ListView lst = (ListView)findViewById(R.id.lista);
+        ListView lst = (ListView) findViewById(R.id.lista);
 
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.000000");
 
         //calculator alcolemie si transfomrare in string
-        calculator.alcolemie();
-        ss = decimalFormat.format(rezultat);
+
+        ss = decimalFormat.format(alcolemie());
 
         //data formatare si transformare in string
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -54,22 +55,20 @@ public class Main2Activity extends AppCompatActivity {
 
         //introducere date in hashmap
         HashMap<String, String> alcolemie = new HashMap<>();
-        alcolemie.put(data, ss );
+        alcolemie.put(data, ss);
 
 
-        List<HashMap<String,String>> listItems = new ArrayList<>()
-                ;
-        SimpleAdapter adapter = new SimpleAdapter(this, listItems,R.layout.list_item,
+        List<HashMap<String, String>> listItems = new ArrayList<>();
+        SimpleAdapter adapter = new SimpleAdapter(this, listItems, R.layout.list_item,
                 new String[]{"First Line", "Second Line"},
-                new int[]{R.id.txtitem,R.id.txtitem2});
+                new int[]{R.id.txtitem, R.id.txtitem2});
 
         Iterator it = alcolemie.entrySet().iterator();
-        while(it.hasNext())
-        {
-            HashMap<String,String> resultMap = new HashMap<>();
-            Map.Entry pair = (Map.Entry)it.next();
-            resultMap.put("First Line",pair.getKey().toString());
-            resultMap.put("Second Line",pair.getValue().toString());
+        while (it.hasNext()) {
+            HashMap<String, String> resultMap = new HashMap<>();
+            Map.Entry pair = (Map.Entry) it.next();
+            resultMap.put("First Line", pair.getKey().toString());
+            resultMap.put("Second Line", pair.getValue().toString());
             listItems.add(resultMap);
         }
 
@@ -80,15 +79,28 @@ public class Main2Activity extends AppCompatActivity {
         bt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent next = new Intent(Main2Activity.this,Controller.class);
+                Intent next = new Intent(Main2Activity.this, Controller.class);
                 startActivity(next);
             }
         });
 
 
-
     }
 
+    public int getGreutate() {
+        SharedPreferences result = getSharedPreferences("userInfo", 0);
+        int greutate = Integer.parseInt(result.getString("Greutate", "Nu au fost gasite datele!"));
+        return greutate;
+    }
 
+    public double alcolemie() {
+        double rezultat = 0;
+
+        for (Alcool alcool : Controller.bauturi) {
+            rezultat += ((alcool.getCantitate() * 0.03381402) * alcool.getConcentratie() * 0.075 / (getGreutate() * 2.2046244210837774)) - (1 * 0.015);
+        }
+
+        return rezultat;
+    }
 
 }
