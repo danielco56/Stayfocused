@@ -23,11 +23,19 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import static com.example.danielco56.stayfocused.Cronometru.timesUP;
 
 
 public class Controller extends AppCompatActivity {
 
+    public static ArrayList<Inregistrare> istoric=new ArrayList<Inregistrare>();
     private NotificationHelper helper;
     private Button stopButton, beerButton, wineButton, alcButton;
     private TextView cron;
@@ -166,13 +174,20 @@ public class Controller extends AppCompatActivity {
 
 
                 //introduc valori in textboxul cu bauturi alcolemie si timp
-
                 mCronometru.stop();
 
+                DecimalFormat decimalFormat = new DecimalFormat("#,##0.000000");
+                String alcol = decimalFormat.format(alcolemie());
+
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date currentTime = Calendar.getInstance().getTime();
+                String data = df.format(currentTime);
+
+                istoric.add(new Inregistrare(alcol,bauturi.size(),data));
 
                 statistics = new Statistics();
 
-                Intent intent = new Intent(Controller.this, Statistics.class);
+                Intent intent = new Intent(Controller.this, Main2Activity.class);
                 startActivity(intent);
 
             }
@@ -225,6 +240,23 @@ public class Controller extends AppCompatActivity {
 
 
 
+    public int getGreutate() {
+        SharedPreferences result = getSharedPreferences("userInfo", 0);
+        int greutate = Integer.parseInt(result.getString("Greutate", "Nu au fost gasite datele!"));
+        return greutate;
+    }
 
+    public double alcolemie() {
+        double rezultat = 0;
+        long since = timesUP;
+        int hours = (int) ((since / 3600000) % 24);
+
+        for (Alcool alcool : Controller.bauturi) {
+            rezultat += ((alcool.getCantitate() * 0.03381402) * alcool.getConcentratie() * 0.075 / (getGreutate() * 2.2046244210837774)) - (hours * 0.015);
+        }
+        return rezultat;
+
+
+    }
 
 }

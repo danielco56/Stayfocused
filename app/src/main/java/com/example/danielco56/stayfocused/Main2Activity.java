@@ -29,51 +29,16 @@ import static com.example.danielco56.stayfocused.Controller.bauturi;
 
 public class Main2Activity extends AppCompatActivity {
 
-    public static String data;
-    public static String ss;
-
-
-    private Controller controller = new Controller();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        ListView lst = (ListView) findViewById(R.id.lista);
 
-        DecimalFormat decimalFormat = new DecimalFormat("#,##0.000000");
-
-        //calculator alcolemie si transfomrare in string
-
-        ss = decimalFormat.format(alcolemie());
-
-        //data formatare si transformare in string
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date currentTime = Calendar.getInstance().getTime();
-        String data = df.format(currentTime);
-
-        //introducere date in hashmap
-        HashMap<String, String> alcolemie = new HashMap<>();
-        alcolemie.put(data, ss);
-
-
-        List<HashMap<String, String>> listItems = new ArrayList<>();
-        SimpleAdapter adapter = new SimpleAdapter(this, listItems, R.layout.list_item,
-                new String[]{"First Line", "Second Line"},
-                new int[]{R.id.txtitem, R.id.txtitem2});
-
-        Iterator it = alcolemie.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap<String, String> resultMap = new HashMap<>();
-            Map.Entry pair = (Map.Entry) it.next();
-            resultMap.put("First Line", pair.getKey().toString());
-            resultMap.put("Second Line", pair.getValue().toString());
-            listItems.add(resultMap);
-        }
-
-        lst.setAdapter(adapter);
-
+        PersonalAdapter adapter = new PersonalAdapter(this, R.layout.list_item, Controller.istoric);
+        ListView list = (ListView) findViewById(R.id.lista);
+        list.setAdapter(adapter);
         ImageView bt2 = (ImageView) findViewById(R.id.backButton);
 
         bt2.setOnClickListener(new View.OnClickListener() {
@@ -87,20 +52,5 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
-    public int getGreutate() {
-        SharedPreferences result = getSharedPreferences("userInfo", 0);
-        int greutate = Integer.parseInt(result.getString("Greutate", "Nu au fost gasite datele!"));
-        return greutate;
-    }
-
-    public double alcolemie() {
-        double rezultat = 0;
-
-        for (Alcool alcool : Controller.bauturi) {
-            rezultat += ((alcool.getCantitate() * 0.03381402) * alcool.getConcentratie() * 0.075 / (getGreutate() * 2.2046244210837774)) - (1 * 0.015);
-        }
-
-        return rezultat;
-    }
 
 }
