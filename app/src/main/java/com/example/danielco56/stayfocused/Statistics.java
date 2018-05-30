@@ -1,11 +1,15 @@
 package com.example.danielco56.stayfocused;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +40,7 @@ public class Statistics extends AppCompatActivity {
     public TextView tx1, tx2, tx3;
     private double s = 0;
     private Controller controller = new Controller();
-
+    private ImageView history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,7 @@ public class Statistics extends AppCompatActivity {
         tx1 = (TextView) findViewById(R.id.BAUTURI);
         tx2 = (TextView) findViewById(R.id.ALCOLEMIE);
         tx3 = (TextView) findViewById(R.id.TIMP);
-
+        history=(ImageView) findViewById(R.id.historyButton);
 
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.000000");
         String ss = decimalFormat.format(alcolemie());
@@ -106,7 +110,13 @@ public class Statistics extends AppCompatActivity {
 
         pie.setData(data);
 
-
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent next = new Intent(Statistics.this, Main2Activity.class);
+                startActivity(next);
+            }
+        });
     }
 
     private String returnTime() {

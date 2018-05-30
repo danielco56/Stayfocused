@@ -22,7 +22,10 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -35,7 +38,7 @@ import static com.example.danielco56.stayfocused.Cronometru.timesUP;
 
 public class Controller extends AppCompatActivity {
 
-    public static ArrayList<Inregistrare> istoric=new ArrayList<Inregistrare>();
+    public ArrayList<Inregistrare> inregistrari;
     private NotificationHelper helper;
     private Button stopButton, beerButton, wineButton, alcButton;
     private TextView cron;
@@ -55,11 +58,8 @@ public class Controller extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controller);
-
+        loadData();
         Boolean isFirstRun = getSharedPreferences("Preference", MODE_PRIVATE).getBoolean("isfirstrun", true);
-
-        //////////////AD
-
 
         if (isFirstRun) {
             showStartDialog();
@@ -73,14 +73,12 @@ public class Controller extends AppCompatActivity {
         alcButton = (Button) findViewById(R.id.alcButton);
         cron = (TextView) findViewById(R.id.cron);
 
-        ////AD
+
         MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
         AdView adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-        ////
 
-        //CRONOMETRUL
         if (mCronometru == null) {
             mCronometru = new Cronometru(this);
             mThread = new Thread(mCronometru);
@@ -96,18 +94,13 @@ public class Controller extends AppCompatActivity {
                 bauturi.add(new Alcool(500, 5));
                 nrBere++;
                 Toast.makeText(getApplicationContext(), "Bere adaugata!", Toast.LENGTH_SHORT).show();
-                //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
                 if (bauturi.size() % 2 == 0) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            // Do something after 5s = 5000ms
                             if (Build.VERSION.SDK_INT < 25)
                                 sendNotification("Trebuie să bei apă!");
-//                            else
-//                                notificareNewAPI("Trebuie să bei apă!");
-
                         }
                     }, 5000);
                 }
@@ -122,18 +115,13 @@ public class Controller extends AppCompatActivity {
                 bauturi.add(new Alcool(120, 13));
                 nrVin++;
                 Toast.makeText(getApplicationContext(), "Vin adaugat!", Toast.LENGTH_SHORT).show();
-                //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
                 if (bauturi.size() % 2 == 0) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            // Do something after 5s = 5000ms
                             if (Build.VERSION.SDK_INT < 25)
                                 sendNotification("Trebuie să bei apă!");
-//                            else
-//                                notificareNewAPI("Trebuie să bei apă!");
-
                         }
                     }, 5000);
                 }
@@ -148,18 +136,13 @@ public class Controller extends AppCompatActivity {
                 bauturi.add(new Alcool(50, 40));
                 nrTarie++;
                 Toast.makeText(getApplicationContext(), "Bautura adaugata!", Toast.LENGTH_SHORT).show();
-                //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
                 if (bauturi.size() % 2 == 0) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            // Do something after 5s = 5000ms
                             if (Build.VERSION.SDK_INT < 25)
                                 sendNotification("Trebuie să bei apă!");
-//                            else
-//                                notificareNewAPI("Trebuie să bei apă!");
-
                         }
                     }, 5000);
                 }
@@ -169,6 +152,7 @@ public class Controller extends AppCompatActivity {
 
 
         stopButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
@@ -183,11 +167,11 @@ public class Controller extends AppCompatActivity {
                 Date currentTime = Calendar.getInstance().getTime();
                 String data = df.format(currentTime);
 
-                istoric.add(new Inregistrare(alcol,bauturi.size(),data));
-
+                inregistrari.add(new Inregistrare(alcol, bauturi.size(), data));
+                saveData();
                 statistics = new Statistics();
 
-                Intent intent = new Intent(Controller.this, Main2Activity.class);
+                Intent intent = new Intent(Controller.this, Statistics.class);
                 startActivity(intent);
 
             }
@@ -205,12 +189,6 @@ public class Controller extends AppCompatActivity {
         editor.putBoolean("isfirstrun", false);
         editor.apply();
     }
-
-
-//    private void notificareNewAPI(String body) {
-//        Notification.Builder builder = helper.getMyChannelNotification(body);
-//        helper.getManager().notify();
-//    }
 
     private void sendNotification(String st) {
         Notification.Builder notificationBuilder = new Notification.Builder(this)
@@ -239,7 +217,6 @@ public class Controller extends AppCompatActivity {
     }
 
 
-
     public int getGreutate() {
         SharedPreferences result = getSharedPreferences("userInfo", 0);
         int greutate = Integer.parseInt(result.getString("Greutate", "Nu au fost gasite datele!"));
@@ -257,6 +234,31 @@ public class Controller extends AppCompatActivity {
         return rezultat;
 
 
+    }
+
+    private void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("dataBase", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(inregistrari);
+        editor.putString("lista", json);
+        editor.apply();
+    }
+
+    private void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("dataBase", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("lista", null);
+        Type type = new TypeToken<ArrayList<Inregistrare>>() {
+        }.getType();
+        inregistrari = gson.fromJson(json, type);
+        if (inregistrari == null) {
+            inregistrari = new ArrayList<>();
+        }
+        if (inregistrari.size() >= 10) {
+            sharedPreferences.edit().remove("list").apply();
+            inregistrari.clear();
+        }
     }
 
 }
