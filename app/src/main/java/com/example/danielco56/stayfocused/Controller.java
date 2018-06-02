@@ -1,5 +1,6 @@
 package com.example.danielco56.stayfocused;
 
+import android.app.Activity;
 import android.app.Notification;
 
 import android.app.NotificationManager;
@@ -11,11 +12,15 @@ import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Handler;
 
+import android.os.Process;
+import android.renderscript.Sampler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +39,8 @@ public class Controller extends AppCompatActivity {
     public static double time;
     public static ArrayList<Alcool> bauturi = new ArrayList<Alcool>();
     private Cronometru mCronometru;
-    private Thread mThread;
+    private CronometruOprire mmCronometru,a;
+    private Thread mThread,mmThread;
 
 
     private Statistics statistics;
@@ -49,8 +55,6 @@ public class Controller extends AppCompatActivity {
         setContentView(R.layout.activity_controller);
 
         Boolean isFirstRun = getSharedPreferences("Preference", MODE_PRIVATE).getBoolean("isfirstrun", true);
-
-        //////////////AD
 
 
         if (isFirstRun) {
@@ -72,13 +76,25 @@ public class Controller extends AppCompatActivity {
         adView.loadAd(adRequest);
         ////
 
+
         //CRONOMETRUL
         if (mCronometru == null) {
             mCronometru = new Cronometru(this);
             mThread = new Thread(mCronometru);
             mCronometru.start();
             mThread.start();
+
         }
+
+        ////////Cronometru pentru oprire
+        if (mmCronometru == null) {
+            mmCronometru = new CronometruOprire(this);
+            mmThread = new Thread(mmCronometru);
+            mmCronometru.start();
+            mmThread.start();
+
+        }
+
 
 
         beerButton.setOnClickListener(new View.OnClickListener() {
@@ -87,8 +103,11 @@ public class Controller extends AppCompatActivity {
 
                 bauturi.add(new Alcool(500, 5));
                 nrBere++;
+                mmCronometru.stop();
+                mmCronometru.start();
                 Toast.makeText(getApplicationContext(), "Bere adaugata!", Toast.LENGTH_SHORT).show();
-                //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
+
+
                 if (bauturi.size() % 2 == 0) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -113,8 +132,11 @@ public class Controller extends AppCompatActivity {
             public void onClick(View v) {
                 bauturi.add(new Alcool(120, 13));
                 nrVin++;
+                mmCronometru.stop();
+                mmCronometru.start();
                 Toast.makeText(getApplicationContext(), "Vin adaugat!", Toast.LENGTH_SHORT).show();
-                //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
+
+
                 if (bauturi.size() % 2 == 0) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -139,8 +161,13 @@ public class Controller extends AppCompatActivity {
 
                 bauturi.add(new Alcool(50, 40));
                 nrTarie++;
+                mmCronometru.stop();
+                mmCronometru.start();
+
+
                 Toast.makeText(getApplicationContext(), "Bautura adaugata!", Toast.LENGTH_SHORT).show();
-                //  textView.setText("Pana acum ai consumat: " + bauturi.size() + " bauturi alcoolice!");
+
+
                 if (bauturi.size() % 2 == 0) {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -164,22 +191,26 @@ public class Controller extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                //introduc valori in textboxul cu bauturi alcolemie si timp
-
                 mCronometru.stop();
+                mmCronometru.stop();
 
-
-                statistics = new Statistics();
-
-                Intent intent = new Intent(Controller.this, Statistics.class);
-                startActivity(intent);
+                statisticActivity();
 
             }
         });
 
 
+
+
     }
+
+    public void statisticActivity(){
+        statistics = new Statistics();
+        Intent intent = new Intent(Controller.this, Statistics.class);
+        startActivity(intent);
+
+    }
+
 
     private void showStartDialog() {
         Intent firstActivity = new Intent(Controller.this, FirstPage.class);
@@ -222,7 +253,6 @@ public class Controller extends AppCompatActivity {
             }
         });
     }
-
 
 
 

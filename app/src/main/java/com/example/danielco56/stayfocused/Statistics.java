@@ -42,7 +42,7 @@ import static com.example.danielco56.stayfocused.Cronometru.timesUP;
 public class Statistics extends AppCompatActivity {
 
 
-    public TextView tx1, tx2, tx3;
+    private TextView bauturi, alcolemie, timp;
     private double s = 0;
     private Controller controller = new Controller();
     public Button button;
@@ -54,27 +54,27 @@ public class Statistics extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
-        /////////AD
-        //   MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
-        //   AdView adView = (AdView) findViewById(R.id.adView2);
-        //    AdRequest adRequest = new AdRequest.Builder().build();
-        //   adView.loadAd(adRequest);
-        /////////
+        ///////AD
+           MobileAds.initialize(this, "ca-app-pub-3940256099942544/6300978111");
+           AdView adView = (AdView) findViewById(R.id.adView2);
+            AdRequest adRequest = new AdRequest.Builder().build();
+           adView.loadAd(adRequest);
+        ///////
 
         PieChart pie = (PieChart) findViewById(R.id.pie);
-        tx1 = (TextView) findViewById(R.id.BAUTURI);
-        tx2 = (TextView) findViewById(R.id.ALCOLEMIE);
-        tx3 = (TextView) findViewById(R.id.TIMP);
+        bauturi = (TextView) findViewById(R.id.BAUTURI);
+        alcolemie = (TextView) findViewById(R.id.ALCOLEMIE);
+        timp = (TextView) findViewById(R.id.TIMP);
 
 
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.000000");
         String ss = decimalFormat.format(alcolemie());
 
         String sumB = String.valueOf(nrBere + nrTarie + nrVin);
-        tx1.setText(sumB);
-        tx2.setText(ss);
+        bauturi.setText(sumB);
+        alcolemie.setText(ss);
 
-        tx3.setText(returnTime());
+        timp.setText(returnTime());
 
 
         pie.setUsePercentValues(true);
