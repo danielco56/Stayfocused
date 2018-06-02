@@ -162,8 +162,6 @@ public class Statistics extends AppCompatActivity {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
                         Bitmap bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-
-
                         imageView.getLayoutParams().height = 360;
                         imageView.getLayoutParams().width = 360;
                         imageView.requestLayout();
@@ -181,8 +179,6 @@ public class Statistics extends AppCompatActivity {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-
-
                         imageView.getLayoutParams().height = 360;
                         imageView.getLayoutParams().width = 360;
                         imageView.requestLayout();
