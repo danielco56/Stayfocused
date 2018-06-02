@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_weight="25"
-            android:text="Numar Buturi:"
+            android:text="Număr Buturi:"
             android:textAlignment="center"
             android:textSize="13sp"
             android:textStyle="bold" />

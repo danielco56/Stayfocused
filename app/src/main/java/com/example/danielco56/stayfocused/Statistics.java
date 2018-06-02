@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.example.danielco56.stayfocused.Controller.nrBere;
 import static com.example.danielco56.stayfocused.Controller.nrTarie;
 import static com.example.danielco56.stayfocused.Controller.nrVin;
@@ -41,6 +43,7 @@ public class Statistics extends AppCompatActivity {
     private double s = 0;
     private Controller controller = new Controller();
     private ImageView history;
+    private Boolean exit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +117,9 @@ public class Statistics extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent next = new Intent(Statistics.this, Main2Activity.class);
+                next.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                next.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                next.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(next);
             }
         });
@@ -182,6 +188,26 @@ public class Statistics extends AppCompatActivity {
         }
         return rezultat;
 
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Apasă încă o dată pentru a ieși!",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
 
     }
 

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.example.danielco56.stayfocused.Cronometru.timesUP;
 
 
@@ -43,6 +44,7 @@ public class Controller extends AppCompatActivity {
     private Button stopButton, beerButton, wineButton, alcButton;
     private TextView cron;
     public static double time;
+    private Boolean exit = false;
     public static ArrayList<Alcool> bauturi = new ArrayList<Alcool>();
     private Cronometru mCronometru;
     private Thread mThread;
@@ -90,7 +92,7 @@ public class Controller extends AppCompatActivity {
         beerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                beerButton.setEnabled(false);
                 bauturi.add(new Alcool(500, 5));
                 nrBere++;
                 Toast.makeText(getApplicationContext(), "Bere adaugata!", Toast.LENGTH_SHORT).show();
@@ -101,6 +103,7 @@ public class Controller extends AppCompatActivity {
                         public void run() {
                             if (Build.VERSION.SDK_INT < 25)
                                 sendNotification("Trebuie să bei apă!");
+                            beerButton.setEnabled(true);
                         }
                     }, 5000);
                 }
@@ -112,6 +115,7 @@ public class Controller extends AppCompatActivity {
         wineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                wineButton.setEnabled(false);
                 bauturi.add(new Alcool(120, 13));
                 nrVin++;
                 Toast.makeText(getApplicationContext(), "Vin adaugat!", Toast.LENGTH_SHORT).show();
@@ -122,6 +126,7 @@ public class Controller extends AppCompatActivity {
                         public void run() {
                             if (Build.VERSION.SDK_INT < 25)
                                 sendNotification("Trebuie să bei apă!");
+                            wineButton.setEnabled(true);
                         }
                     }, 5000);
                 }
@@ -132,7 +137,7 @@ public class Controller extends AppCompatActivity {
         alcButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                alcButton.setEnabled(false);
                 bauturi.add(new Alcool(50, 40));
                 nrTarie++;
                 Toast.makeText(getApplicationContext(), "Bautura adaugata!", Toast.LENGTH_SHORT).show();
@@ -143,6 +148,7 @@ public class Controller extends AppCompatActivity {
                         public void run() {
                             if (Build.VERSION.SDK_INT < 25)
                                 sendNotification("Trebuie să bei apă!");
+                            alcButton.setEnabled(true);
                         }
                     }, 5000);
                 }
@@ -172,6 +178,9 @@ public class Controller extends AppCompatActivity {
                 statistics = new Statistics();
 
                 Intent intent = new Intent(Controller.this, Statistics.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 
             }
@@ -259,6 +268,26 @@ public class Controller extends AppCompatActivity {
             sharedPreferences.edit().remove("list").apply();
             inregistrari.clear();
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Apasă încă o dată pentru a ieși!",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
+
     }
 
 }
