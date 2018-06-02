@@ -25,13 +25,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+
                 android:id="@+id/cerc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="45dp"
-                android:background="@drawable/cercpoza" />
+                android:cropToPadding="true"
+                android:background="@drawable/cercpoza"
+                />
 
             <Button
                 android:id="@+id/button"
@@ -41,7 +44,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="182dp"
-                android:text="fa-ti o poza" />
+                android:text="pune o poza" />
 
             <LinearLayout
                 android:id="@+id/lineA"

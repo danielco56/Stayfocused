@@ -1,16 +1,33 @@
 package com.example.danielco56.stayfocused;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,6 +45,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -47,7 +65,12 @@ public class Statistics extends AppCompatActivity {
     private Controller controller = new Controller();
     public Button button;
     public ImageView imageView;
-    static final int CAM_REQUEST = 1;
+    public Uri uri;
+    public File file;
+    public Intent CamIntent, GalIntent, CropIntent;
+    final int RequestPermissionCode = 1;
+    DisplayMetrics displayMetrics;
+    int width, height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,32 +142,58 @@ public class Statistics extends AppCompatActivity {
         ///
         button = (Button) findViewById(R.id.button);
         imageView = (ImageView) findViewById(R.id.cerc);
+
+
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File file = getFile();
-                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                startActivityForResult(camera_intent, CAM_REQUEST);
-
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto , 1);
             }
         });
-
     }
 
-    private File getFile(){
-        File folder = new File("sdcard/camera_daigroapa");
-        if(!folder.exists()){
-            folder.mkdir();
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch(requestCode) {
+            case 0:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    try {
+                        Bitmap bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+
+
+                        imageView.getLayoutParams().height = 360;
+                        imageView.getLayoutParams().width = 360;
+                        imageView.requestLayout();
+                        imageView.setImageBitmap(bitmap1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    imageView.setImageURI(selectedImage);
+                }
+
+                break;
+            case 1:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+
+
+                        imageView.getLayoutParams().height = 360;
+                        imageView.getLayoutParams().width = 360;
+                        imageView.requestLayout();
+                        imageView.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    imageView.setImageURI(selectedImage);
+                }
+                break;
         }
-        File image_file=new File(folder,"user_photo.jpg");
-        return image_file;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String path = "sdcard/camera_daigroapa/user_photo.jpg";
-        imageView.setImageDrawable(Drawable.createFromPath(path));
     }
 
     ////
